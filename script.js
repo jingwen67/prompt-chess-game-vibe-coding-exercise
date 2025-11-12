@@ -53,14 +53,10 @@ async function loadData() {
 
 // Initialize theme from localStorage
 function initializeTheme() {
-    const savedTheme = localStorage.getItem('theme') || 'kaggle';
+    const savedTheme = 'kaggle';
     const savedDark = localStorage.getItem('darkMode') === 'true';
     document.documentElement.setAttribute('data-theme', savedTheme);
     document.documentElement.setAttribute('data-dark', savedDark);
-    const themeSelect = document.getElementById('themeSelect');
-    if (themeSelect) {
-        themeSelect.value = savedTheme;
-    }
     updateThemeIcon(savedDark);
 }
 
@@ -82,9 +78,6 @@ function setupEventListeners() {
             }
         }
     });
-    
-    // Theme selector
-    document.getElementById('themeSelect').addEventListener('change', handleThemeChange);
     
     // Dark mode toggle
     document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
@@ -993,14 +986,6 @@ function removeFromComparison(playerName) {
 function clearComparison() {
     comparisonPlayers = [];
     renderComparison();
-}
-
-// Handle theme change
-function handleThemeChange(e) {
-    const newTheme = e.target.value;
-    document.documentElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
-    updateCharts(); // Update charts to reflect new theme colors
 }
 
 // Toggle dark mode

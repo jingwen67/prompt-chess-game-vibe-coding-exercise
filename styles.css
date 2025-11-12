@@ -110,40 +110,6 @@ header h1 {
     align-items: center;
 }
 
-.theme-selector {
-    position: relative;
-}
-
-.theme-select {
-    padding: 10px 36px 10px 14px;
-    border: 2px solid var(--border);
-    background: var(--bg-secondary);
-    color: var(--text-primary);
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.2s ease;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%237f8c8d' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-}
-
-[data-dark="true"] .theme-select {
-    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%238b949e' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
-}
-
-.theme-select:focus {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(32, 190, 255, 0.1);
-}
-
-[data-dark="true"] .theme-select:focus {
-    box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2);
-}
-
 .theme-toggle {
     padding: 10px 14px;
     border: 2px solid var(--border);
