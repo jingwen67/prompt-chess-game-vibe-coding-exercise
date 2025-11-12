@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Tournament Results</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>♟️ Chess Tournament Results</h1>
+            <div class="header-controls">
+                <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                <button id="exportBtn" class="export-btn">Export CSV</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Search and Filter Section -->
+        <section class="controls-section">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search players...">
+                <span class="search-icon">🔍</span>
+            </div>
+            <div class="filter-box">
+                <label for="sortSelect">Sort by:</label>
+                <select id="sortSelect">
+                    <option value="rank">Rank</option>
+                    <option value="rating">Rating (Mu)</option>
+                    <option value="winRate">Win Rate</option>
+                    <option value="wins">Wins</option>
+                    <option value="games">Games Played</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Statistics Overview -->
+        <section class="stats-overview">
+            <div class="stat-card">
+                <div class="stat-value" id="totalPlayers">36</div>
+                <div class="stat-label">Total Players</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="avgRating">0</div>
+                <div class="stat-label">Avg Rating</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="avgWinRate">0%</div>
+                <div class="stat-label">Avg Win Rate</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalGames">0</div>
+                <div class="stat-label">Total Games</div>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="charts-section">
+            <div class="chart-container">
+                <h2>Win Rate Distribution</h2>
+                <canvas id="winRateChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h2>Rating Distribution</h2>
+                <canvas id="ratingChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h2>Game Statistics (Wins, Draws, Losses)</h2>
+                <canvas id="gameStatsChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h2>Rating vs Win Rate</h2>
+                <canvas id="ratingWinRateChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Leaderboard Section -->
+        <section class="leaderboard-section">
+            <h2>Leaderboard</h2>
+            <div class="table-container">
+                <table id="leaderboardTable">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Player</th>
+                            <th>Rating (μ)</th>
+                            <th>Rating (σ)</th>
+                            <th>Wins</th>
+                            <th>Draws</th>
+                            <th>Losses</th>
+                            <th>Games</th>
+                            <th>Win Rate</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboardBody">
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Comparison Section -->
+        <section class="comparison-section" id="comparisonSection" style="display: none;">
+            <h2>Player Comparison</h2>
+            <div id="comparisonContent"></div>
+            <button id="clearComparison" class="clear-btn">Clear Comparison</button>
+        </section>
+    </main>
+
+    <!-- Player Detail Modal -->
+    <div id="playerModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="playerDetailContent"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
