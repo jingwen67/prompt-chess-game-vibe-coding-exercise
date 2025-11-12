@@ -11,15 +11,16 @@
 <body>
     <header>
         <div class="container">
-            <h1>Chess Tournament</h1>
+            <h1>♟️ Chess Tournament</h1>
             <div class="header-controls">
                 <div class="theme-selector">
                     <select id="themeSelect" class="theme-select">
-                        <option value="apple">Apple</option>
-                        <option value="netflix">Netflix</option>
-                        <option value="kaggle">Kaggle</option>
+                        <option value="instagram">Instagram</option>
                     </select>
                 </div>
+                <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+                    <span class="theme-icon">🌙</span>
+                </button>
                 <button id="exportBtn" class="export-btn">Export</button>
             </div>
         </div>
@@ -29,7 +30,7 @@
         <!-- Search Section -->
         <section class="controls-section">
             <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Search players">
+                <input type="text" id="searchInput" placeholder="🔍 Search players">
                 <svg class="search-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M7 12C9.76142 12 12 9.76142 12 7C12 4.23858 9.76142 2 7 2C4.23858 2 2 4.23858 2 7C2 9.76142 4.23858 12 7 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -41,38 +42,38 @@
         <section class="stats-overview">
             <div class="stat-card">
                 <div class="stat-value" id="totalPlayers">36</div>
-                <div class="stat-label">Total Players</div>
+                <div class="stat-label">👥 Total Players</div>
             </div>
             <div class="stat-card">
                 <div class="stat-value" id="avgRating">0</div>
-                <div class="stat-label">Avg Rating</div>
+                <div class="stat-label">⭐ Avg Rating</div>
             </div>
             <div class="stat-card">
                 <div class="stat-value" id="avgWinRate">0%</div>
-                <div class="stat-label">Avg Win Rate</div>
+                <div class="stat-label">🏆 Avg Win Rate</div>
             </div>
             <div class="stat-card">
                 <div class="stat-value" id="totalGames">0</div>
-                <div class="stat-label">Total Games</div>
+                <div class="stat-label">🎮 Total Games</div>
             </div>
         </section>
 
         <!-- Charts Section -->
         <section class="charts-section">
             <div class="chart-container">
-                <h2>Win Rate Distribution</h2>
+                <h2>📊 Win Rate Distribution</h2>
                 <canvas id="winRateChart"></canvas>
             </div>
             <div class="chart-container">
-                <h2>Rating Distribution</h2>
+                <h2>📈 Rating Distribution</h2>
                 <canvas id="ratingChart"></canvas>
             </div>
             <div class="chart-container">
-                <h2>Game Statistics (Wins, Draws, Losses)</h2>
+                <h2>🎯 Game Statistics (Wins, Draws, Losses)</h2>
                 <canvas id="gameStatsChart"></canvas>
             </div>
             <div class="chart-container">
-                <h2>Rating vs Win Rate</h2>
+                <h2>📉 Rating vs Win Rate</h2>
                 <canvas id="ratingWinRateChart"></canvas>
             </div>
         </section>
@@ -80,7 +81,7 @@
         <!-- Leaderboard Section -->
         <section class="leaderboard-section">
             <div class="leaderboard-header">
-                <h2>Leaderboard</h2>
+                <h2>🏅 Leaderboard</h2>
                 <div class="filter-box">
                     <label for="sortSelect">Sort by:</label>
                     <select id="sortSelect">

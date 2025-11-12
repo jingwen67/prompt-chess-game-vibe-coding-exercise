@@ -53,12 +53,15 @@ async function loadData() {
 
 // Initialize theme from localStorage
 function initializeTheme() {
-    const savedTheme = localStorage.getItem('theme') || 'apple';
+    const savedTheme = localStorage.getItem('theme') || 'instagram';
+    const savedDark = localStorage.getItem('darkMode') === 'true';
     document.documentElement.setAttribute('data-theme', savedTheme);
+    document.documentElement.setAttribute('data-dark', savedDark);
     const themeSelect = document.getElementById('themeSelect');
     if (themeSelect) {
         themeSelect.value = savedTheme;
     }
+    updateThemeIcon(savedDark);
 }
 
 // Setup event listeners
@@ -82,6 +85,9 @@ function setupEventListeners() {
     
     // Theme selector
     document.getElementById('themeSelect').addEventListener('change', handleThemeChange);
+    
+    // Dark mode toggle
+    document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
     
     // Export
     document.getElementById('exportBtn').addEventListener('click', exportToCSV);
@@ -435,55 +441,23 @@ function updateStatistics() {
 
 // Get chart colors based on theme
 function getChartColors(theme) {
-    switch(theme) {
-        case 'netflix':
-            return {
-                primary: '#e50914',
-                primaryLight: '#f40612',
-                secondary: '#46d369',
-                accent: '#e87c03'
-            };
-        case 'kaggle':
-            return {
-                primary: '#20beff',
-                primaryLight: '#0099cc',
-                secondary: '#00c853',
-                accent: '#ff9800'
-            };
-        case 'apple':
-        default:
-            return {
-                primary: '#0071e3',
-                primaryLight: '#0077ed',
-                secondary: '#30d158',
-                accent: '#ff9f0a'
-            };
-    }
+    // Instagram theme colors
+    return {
+        primary: '#e1306c',
+        primaryLight: '#c13584',
+        secondary: '#00c853',
+        accent: '#ff9800'
+    };
 }
 
 // Get text colors based on theme
 function getTextColors(theme) {
-    switch(theme) {
-        case 'netflix':
-            return {
-                primary: '#b3b3b3',
-                secondary: '#808080',
-                grid: 'rgba(255, 255, 255, 0.05)'
-            };
-        case 'kaggle':
-            return {
-                primary: '#7f8c8d',
-                secondary: '#95a5a6',
-                grid: 'rgba(0, 0, 0, 0.05)'
-            };
-        case 'apple':
-        default:
-            return {
-                primary: '#86868b',
-                secondary: '#6b7280',
-                grid: 'rgba(0, 0, 0, 0.05)'
-            };
-    }
+    const isDark = document.documentElement.getAttribute('data-dark') === 'true';
+    return {
+        primary: isDark ? '#a8a8a8' : '#8e8e8e',
+        secondary: isDark ? '#808080' : '#737373',
+        grid: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'
+    };
 }
 
 // Create charts
@@ -515,7 +489,7 @@ function createWinRateChart() {
     
     if (charts.winRate) charts.winRate.destroy();
     
-    const theme = document.documentElement.getAttribute('data-theme') || 'apple';
+    const theme = document.documentElement.getAttribute('data-theme') || 'instagram';
     const chartColors = getChartColors(theme);
     
     charts.winRate = new Chart(ctx, {
@@ -591,7 +565,7 @@ function createRatingChart() {
     
     if (charts.rating) charts.rating.destroy();
     
-    const theme = document.documentElement.getAttribute('data-theme') || 'apple';
+    const theme = document.documentElement.getAttribute('data-theme') || 'instagram';
     const chartColors = getChartColors(theme);
     chartColors.primary = chartColors.secondary;
     chartColors.primaryLight = theme === 'netflix' ? '#5ae87a' : theme === 'kaggle' ? '#00e676' : '#34d399';
@@ -663,11 +637,7 @@ function createGameStatsChart() {
     const theme = document.documentElement.getAttribute('data-theme') || 'apple';
     const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text-primary').trim();
     
-    const colors = {
-        apple: ['#30d158', '#ff9f0a', '#ff453a'],
-        netflix: ['#46d369', '#e87c03', '#e50914'],
-        kaggle: ['#00c853', '#ff9800', '#f44336']
-    };
+    const colors = ['#00c853', '#ff9800', '#e1306c'];
     
     charts.gameStats = new Chart(ctx, {
         type: 'doughnut',
@@ -675,7 +645,7 @@ function createGameStatsChart() {
             labels: ['Wins', 'Draws', 'Losses'],
             datasets: [{
                 data: [totalWins, totalDraws, totalLosses],
-                backgroundColor: colors[theme] || colors.apple,
+                backgroundColor: colors,
                 borderWidth: 0,
                 spacing: 2
             }]
@@ -712,7 +682,7 @@ function createRatingWinRateChart() {
     
     if (charts.ratingWinRate) charts.ratingWinRate.destroy();
     
-    const theme = document.documentElement.getAttribute('data-theme') || 'apple';
+    const theme = document.documentElement.getAttribute('data-theme') || 'instagram';
     const chartColors = getChartColors(theme);
     
     charts.ratingWinRate = new Chart(ctx, {
@@ -752,7 +722,7 @@ function createRatingWinRateChart() {
                         text: 'Rating (μ)',
                         font: {
                             size: 13,
-                            family: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif',
+                            family: getComputedStyle(document.documentElement).getPropertyValue('--font-family').trim(),
                             weight: 500
                         },
                         color: getTextColors(theme).primary,
@@ -1028,6 +998,24 @@ function handleThemeChange(e) {
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
     updateCharts(); // Update charts to reflect new theme colors
+}
+
+// Toggle dark mode
+function toggleDarkMode() {
+    const isDark = document.documentElement.getAttribute('data-dark') === 'true';
+    const newDark = !isDark;
+    document.documentElement.setAttribute('data-dark', newDark);
+    localStorage.setItem('darkMode', newDark);
+    updateThemeIcon(newDark);
+    updateCharts(); // Update charts to reflect new theme colors
+}
+
+// Update theme icon
+function updateThemeIcon(isDark) {
+    const icon = document.querySelector('.theme-icon');
+    if (icon) {
+        icon.textContent = isDark ? '☀️' : '🌙';
+    }
 }
 
 // Export to CSV
