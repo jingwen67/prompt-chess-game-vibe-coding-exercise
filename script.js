@@ -161,10 +161,13 @@ function updateStatistics() {
 
 // Create charts
 function createCharts() {
-    createWinRateChart();
-    createRatingChart();
-    createGameStatsChart();
-    createRatingWinRateChart();
+    // Small delay to ensure theme is applied
+    setTimeout(() => {
+        createWinRateChart();
+        createRatingChart();
+        createGameStatsChart();
+        createRatingWinRateChart();
+    }, 100);
 }
 
 // Win Rate Distribution Chart
@@ -185,6 +188,14 @@ function createWinRateChart() {
     
     if (charts.winRate) charts.winRate.destroy();
     
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const chartColors = {
+        primary: isDark ? '#0a84ff' : '#0071e3',
+        primaryLight: isDark ? '#409cff' : '#0077ed',
+        secondary: isDark ? '#30d158' : '#30d158',
+        accent: isDark ? '#ff9f0a' : '#ff9500'
+    };
+    
     charts.winRate = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -192,9 +203,11 @@ function createWinRateChart() {
             datasets: [{
                 label: 'Number of Players',
                 data: binCounts,
-                backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#3b82f6',
-                borderColor: getComputedStyle(document.documentElement).getPropertyValue('--accent-hover').trim() || '#2563eb',
-                borderWidth: 1
+                backgroundColor: chartColors.primary,
+                borderColor: chartColors.primaryLight,
+                borderWidth: 0,
+                borderRadius: 8,
+                borderSkipped: false
             }]
         },
         options: {
@@ -235,6 +248,12 @@ function createRatingChart() {
     
     if (charts.rating) charts.rating.destroy();
     
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const chartColors = {
+        primary: isDark ? '#30d158' : '#30d158',
+        primaryLight: isDark ? '#40e560' : '#34d399'
+    };
+    
     charts.rating = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -242,9 +261,11 @@ function createRatingChart() {
             datasets: [{
                 label: 'Number of Players',
                 data: binCounts,
-                backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--success').trim() || '#10b981',
-                borderColor: '#059669',
-                borderWidth: 1
+                backgroundColor: chartColors.primary,
+                borderColor: chartColors.primaryLight,
+                borderWidth: 0,
+                borderRadius: 8,
+                borderSkipped: false
             }]
         },
         options: {
@@ -276,6 +297,9 @@ function createGameStatsChart() {
     
     if (charts.gameStats) charts.gameStats.destroy();
     
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const bgColor = getComputedStyle(document.documentElement).getPropertyValue('--bg-primary').trim();
+    
     charts.gameStats = new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -283,12 +307,12 @@ function createGameStatsChart() {
             datasets: [{
                 data: [totalWins, totalDraws, totalLosses],
                 backgroundColor: [
-                    getComputedStyle(document.documentElement).getPropertyValue('--success').trim() || '#10b981',
-                    getComputedStyle(document.documentElement).getPropertyValue('--warning').trim() || '#f59e0b',
-                    getComputedStyle(document.documentElement).getPropertyValue('--danger').trim() || '#ef4444'
+                    '#30d158',
+                    '#ff9f0a',
+                    '#ff453a'
                 ],
-                borderWidth: 2,
-                borderColor: getComputedStyle(document.documentElement).getPropertyValue('--card-bg').trim() || '#ffffff'
+                borderWidth: 0,
+                spacing: 2
             }]
         },
         options: {
@@ -313,16 +337,24 @@ function createRatingWinRateChart() {
     
     if (charts.ratingWinRate) charts.ratingWinRate.destroy();
     
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const chartColors = {
+        primary: isDark ? '#0a84ff' : '#0071e3',
+        primaryLight: isDark ? '#409cff' : '#0077ed'
+    };
+    
     charts.ratingWinRate = new Chart(ctx, {
         type: 'scatter',
         data: {
             datasets: [{
                 label: 'Players',
                 data: data,
-                backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#3b82f6',
-                borderColor: getComputedStyle(document.documentElement).getPropertyValue('--accent-hover').trim() || '#2563eb',
+                backgroundColor: chartColors.primary + '80',
+                borderColor: chartColors.primary,
+                borderWidth: 2,
                 pointRadius: 6,
-                pointHoverRadius: 8
+                pointHoverRadius: 10,
+                pointHoverBorderWidth: 3
             }]
         },
         options: {
@@ -523,7 +555,7 @@ function toggleTheme() {
 // Update theme icon
 function updateThemeIcon(theme) {
     const icon = document.querySelector('.theme-icon');
-    icon.textContent = theme === 'dark' ? '☀️' : '🌙';
+    icon.textContent = theme === 'dark' ? '☀' : '◐';
 }
 
 // Export to CSV
