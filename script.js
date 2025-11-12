@@ -53,9 +53,12 @@ async function loadData() {
 
 // Initialize theme from localStorage
 function initializeTheme() {
-    const savedTheme = localStorage.getItem('theme') || 'light';
+    const savedTheme = localStorage.getItem('theme') || 'apple';
     document.documentElement.setAttribute('data-theme', savedTheme);
-    updateThemeIcon(savedTheme);
+    const themeSelect = document.getElementById('themeSelect');
+    if (themeSelect) {
+        themeSelect.value = savedTheme;
+    }
 }
 
 // Setup event listeners
@@ -77,8 +80,8 @@ function setupEventListeners() {
         }
     });
     
-    // Theme toggle
-    document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+    // Theme selector
+    document.getElementById('themeSelect').addEventListener('change', handleThemeChange);
     
     // Export
     document.getElementById('exportBtn').addEventListener('click', exportToCSV);
@@ -430,6 +433,59 @@ function updateStatistics() {
     document.getElementById('totalGames').textContent = totalGames;
 }
 
+// Get chart colors based on theme
+function getChartColors(theme) {
+    switch(theme) {
+        case 'netflix':
+            return {
+                primary: '#e50914',
+                primaryLight: '#f40612',
+                secondary: '#46d369',
+                accent: '#e87c03'
+            };
+        case 'kaggle':
+            return {
+                primary: '#20beff',
+                primaryLight: '#0099cc',
+                secondary: '#00c853',
+                accent: '#ff9800'
+            };
+        case 'apple':
+        default:
+            return {
+                primary: '#0071e3',
+                primaryLight: '#0077ed',
+                secondary: '#30d158',
+                accent: '#ff9f0a'
+            };
+    }
+}
+
+// Get text colors based on theme
+function getTextColors(theme) {
+    switch(theme) {
+        case 'netflix':
+            return {
+                primary: '#b3b3b3',
+                secondary: '#808080',
+                grid: 'rgba(255, 255, 255, 0.05)'
+            };
+        case 'kaggle':
+            return {
+                primary: '#7f8c8d',
+                secondary: '#95a5a6',
+                grid: 'rgba(0, 0, 0, 0.05)'
+            };
+        case 'apple':
+        default:
+            return {
+                primary: '#86868b',
+                secondary: '#6b7280',
+                grid: 'rgba(0, 0, 0, 0.05)'
+            };
+    }
+}
+
 // Create charts
 function createCharts() {
     // Small delay to ensure theme is applied
@@ -459,13 +515,8 @@ function createWinRateChart() {
     
     if (charts.winRate) charts.winRate.destroy();
     
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    const chartColors = {
-        primary: isDark ? '#0a84ff' : '#0071e3',
-        primaryLight: isDark ? '#409cff' : '#0077ed',
-        secondary: isDark ? '#30d158' : '#30d158',
-        accent: isDark ? '#ff9f0a' : '#ff9500'
-    };
+    const theme = document.documentElement.getAttribute('data-theme') || 'apple';
+    const chartColors = getChartColors(theme);
     
     charts.winRate = new Chart(ctx, {
         type: 'bar',
@@ -497,24 +548,24 @@ function createWinRateChart() {
                     ticks: {
                         font: {
                             size: 12,
-                            family: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif'
+                            family: getComputedStyle(document.documentElement).getPropertyValue('--font-family').trim()
                         },
-                        color: isDark ? '#86868b' : '#6b7280'
+                        color: getTextColors(theme).primary
                     }
                 },
                 y: {
                     beginAtZero: true,
                     grid: {
-                        color: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)',
+                        color: getTextColors(theme).grid,
                         drawBorder: false
                     },
                     ticks: {
                         stepSize: 1,
                         font: {
                             size: 12,
-                            family: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif'
+                            family: getComputedStyle(document.documentElement).getPropertyValue('--font-family').trim()
                         },
-                        color: isDark ? '#86868b' : '#6b7280'
+                        color: getTextColors(theme).primary
                     }
                 }
             }
@@ -540,11 +591,10 @@ function createRatingChart() {
     
     if (charts.rating) charts.rating.destroy();
     
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    const chartColors = {
-        primary: isDark ? '#30d158' : '#30d158',
-        primaryLight: isDark ? '#40e560' : '#34d399'
-    };
+    const theme = document.documentElement.getAttribute('data-theme') || 'apple';
+    const chartColors = getChartColors(theme);
+    chartColors.primary = chartColors.secondary;
+    chartColors.primaryLight = theme === 'netflix' ? '#5ae87a' : theme === 'kaggle' ? '#00e676' : '#34d399';
     
     charts.rating = new Chart(ctx, {
         type: 'bar',
@@ -576,24 +626,24 @@ function createRatingChart() {
                     ticks: {
                         font: {
                             size: 12,
-                            family: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif'
+                            family: getComputedStyle(document.documentElement).getPropertyValue('--font-family').trim()
                         },
-                        color: isDark ? '#86868b' : '#6b7280'
+                        color: getTextColors(theme).primary
                     }
                 },
                 y: {
                     beginAtZero: true,
                     grid: {
-                        color: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)',
+                        color: getTextColors(theme).grid,
                         drawBorder: false
                     },
                     ticks: {
                         stepSize: 1,
                         font: {
                             size: 12,
-                            family: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif'
+                            family: getComputedStyle(document.documentElement).getPropertyValue('--font-family').trim()
                         },
-                        color: isDark ? '#86868b' : '#6b7280'
+                        color: getTextColors(theme).primary
                     }
                 }
             }
@@ -610,8 +660,14 @@ function createGameStatsChart() {
     
     if (charts.gameStats) charts.gameStats.destroy();
     
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    const bgColor = getComputedStyle(document.documentElement).getPropertyValue('--bg-primary').trim();
+    const theme = document.documentElement.getAttribute('data-theme') || 'apple';
+    const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text-primary').trim();
+    
+    const colors = {
+        apple: ['#30d158', '#ff9f0a', '#ff453a'],
+        netflix: ['#46d369', '#e87c03', '#e50914'],
+        kaggle: ['#00c853', '#ff9800', '#f44336']
+    };
     
     charts.gameStats = new Chart(ctx, {
         type: 'doughnut',
@@ -619,11 +675,7 @@ function createGameStatsChart() {
             labels: ['Wins', 'Draws', 'Losses'],
             datasets: [{
                 data: [totalWins, totalDraws, totalLosses],
-                backgroundColor: [
-                    '#30d158',
-                    '#ff9f0a',
-                    '#ff453a'
-                ],
+                backgroundColor: colors[theme] || colors.apple,
                 borderWidth: 0,
                 spacing: 2
             }]
@@ -637,9 +689,9 @@ function createGameStatsChart() {
                     labels: {
                         font: {
                             size: 13,
-                            family: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif'
+                            family: getComputedStyle(document.documentElement).getPropertyValue('--font-family').trim()
                         },
-                        color: isDark ? '#f5f5f7' : '#1d1d1f',
+                        color: textColor,
                         padding: 16,
                         usePointStyle: true,
                         pointStyle: 'circle'
@@ -660,11 +712,8 @@ function createRatingWinRateChart() {
     
     if (charts.ratingWinRate) charts.ratingWinRate.destroy();
     
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    const chartColors = {
-        primary: isDark ? '#0a84ff' : '#0071e3',
-        primaryLight: isDark ? '#409cff' : '#0077ed'
-    };
+    const theme = document.documentElement.getAttribute('data-theme') || 'apple';
+    const chartColors = getChartColors(theme);
     
     charts.ratingWinRate = new Chart(ctx, {
         type: 'scatter',
@@ -706,19 +755,19 @@ function createRatingWinRateChart() {
                             family: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif',
                             weight: 500
                         },
-                        color: isDark ? '#86868b' : '#6b7280',
+                        color: getTextColors(theme).primary,
                         padding: { top: 12, bottom: 0 }
                     },
                     grid: {
-                        color: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)',
+                        color: getTextColors(theme).grid,
                         drawBorder: false
                     },
                     ticks: {
                         font: {
                             size: 12,
-                            family: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif'
+                            family: getComputedStyle(document.documentElement).getPropertyValue('--font-family').trim()
                         },
-                        color: isDark ? '#86868b' : '#6b7280'
+                        color: getTextColors(theme).primary
                     }
                 },
                 y: {
@@ -727,24 +776,24 @@ function createRatingWinRateChart() {
                         text: 'Win Rate (%)',
                         font: {
                             size: 13,
-                            family: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif',
+                            family: getComputedStyle(document.documentElement).getPropertyValue('--font-family').trim(),
                             weight: 500
                         },
-                        color: isDark ? '#86868b' : '#6b7280',
+                        color: getTextColors(theme).primary,
                         padding: { right: 12, left: 0 }
                     },
                     min: 0,
                     max: 100,
                     grid: {
-                        color: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)',
+                        color: getTextColors(theme).grid,
                         drawBorder: false
                     },
                     ticks: {
                         font: {
                             size: 12,
-                            family: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif'
+                            family: getComputedStyle(document.documentElement).getPropertyValue('--font-family').trim()
                         },
-                        color: isDark ? '#86868b' : '#6b7280'
+                        color: getTextColors(theme).primary
                     }
                 }
             }
@@ -973,20 +1022,12 @@ function clearComparison() {
     renderComparison();
 }
 
-// Toggle theme
-function toggleTheme() {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+// Handle theme change
+function handleThemeChange(e) {
+    const newTheme = e.target.value;
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
-    updateThemeIcon(newTheme);
     updateCharts(); // Update charts to reflect new theme colors
-}
-
-// Update theme icon
-function updateThemeIcon(theme) {
-    const icon = document.querySelector('.theme-icon');
-    icon.textContent = theme === 'dark' ? '☀' : '◐';
 }
 
 // Export to CSV
