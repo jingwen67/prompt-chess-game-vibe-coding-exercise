@@ -1,5 +1,11 @@
 # Solution Implementation
 
+## 🌐 **👉 [CLICK HERE TO VIEW THE WEBSITE](http://localhost:8000) 👈**
+
+> **Note:** Make sure to start a local web server first (see "Running the Website" section below), then click the link above or navigate to `http://localhost:8000` in your browser.
+
+---
+
 A complete website has been implemented using HTML, CSS, and JavaScript with the following features:
 
 ## ✅ Minimum Requirements (All Implemented)
