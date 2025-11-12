@@ -6,6 +6,7 @@
     <title>Chess Tournament Results</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
 </head>
 <body>
     <header>
@@ -21,7 +22,7 @@
     </header>
 
     <main class="container">
-        <!-- Search and Filter Section -->
+        <!-- Search Section -->
         <section class="controls-section">
             <div class="search-box">
                 <input type="text" id="searchInput" placeholder="Search players">
@@ -29,16 +30,6 @@
                     <path d="M7 12C9.76142 12 12 9.76142 12 7C12 4.23858 9.76142 2 7 2C4.23858 2 2 4.23858 2 7C2 9.76142 4.23858 12 7 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-            </div>
-            <div class="filter-box">
-                <label for="sortSelect">Sort by:</label>
-                <select id="sortSelect">
-                    <option value="rank">Rank</option>
-                    <option value="rating">Rating (Mu)</option>
-                    <option value="winRate">Win Rate</option>
-                    <option value="wins">Wins</option>
-                    <option value="games">Games Played</option>
-                </select>
             </div>
         </section>
 
@@ -84,20 +75,59 @@
 
         <!-- Leaderboard Section -->
         <section class="leaderboard-section">
-            <h2>Leaderboard</h2>
+            <div class="leaderboard-header">
+                <h2>Leaderboard</h2>
+                <div class="filter-box">
+                    <label for="sortSelect">Sort by:</label>
+                    <select id="sortSelect">
+                        <option value="rank">Rank</option>
+                        <option value="rating">Rating (Mu)</option>
+                        <option value="winRate">Win Rate</option>
+                        <option value="wins">Wins</option>
+                        <option value="games">Games Played</option>
+                    </select>
+                </div>
+            </div>
             <div class="table-container">
                 <table id="leaderboardTable">
                     <thead>
                         <tr>
-                            <th>Rank</th>
-                            <th>Player</th>
-                            <th>Rating (μ)</th>
-                            <th>Rating (σ)</th>
-                            <th>Wins</th>
-                            <th>Draws</th>
-                            <th>Losses</th>
-                            <th>Games</th>
-                            <th>Win Rate</th>
+                            <th class="sortable" data-sort="rank">
+                                Rank
+                                <span class="sort-arrow"></span>
+                            </th>
+                            <th class="sortable" data-sort="player">
+                                Player
+                                <span class="sort-arrow"></span>
+                            </th>
+                            <th class="sortable" data-sort="ratingMu">
+                                Rating (μ)
+                                <span class="sort-arrow"></span>
+                            </th>
+                            <th class="sortable" data-sort="ratingSigma">
+                                Rating (σ)
+                                <span class="sort-arrow"></span>
+                            </th>
+                            <th class="sortable" data-sort="wins">
+                                Wins
+                                <span class="sort-arrow"></span>
+                            </th>
+                            <th class="sortable" data-sort="draws">
+                                Draws
+                                <span class="sort-arrow"></span>
+                            </th>
+                            <th class="sortable" data-sort="losses">
+                                Losses
+                                <span class="sort-arrow"></span>
+                            </th>
+                            <th class="sortable" data-sort="games">
+                                Games
+                                <span class="sort-arrow"></span>
+                            </th>
+                            <th class="sortable" data-sort="winRate">
+                                Win Rate
+                                <span class="sort-arrow"></span>
+                            </th>
                             <th>Actions</th>
                         </tr>
                     </thead>

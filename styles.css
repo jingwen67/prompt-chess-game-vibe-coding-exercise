@@ -313,12 +313,21 @@ main {
     margin-bottom: 60px;
 }
 
+.leaderboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
 .leaderboard-section h2 {
     font-size: 40px;
     font-weight: 600;
     letter-spacing: -1px;
-    margin-bottom: 32px;
     color: var(--text-primary);
+    margin: 0;
 }
 
 .table-container {
@@ -355,6 +364,51 @@ th {
     top: 0;
     background: var(--bg-tertiary);
     z-index: 10;
+    user-select: none;
+}
+
+th.sortable {
+    cursor: pointer;
+    transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    padding-right: 32px;
+}
+
+th.sortable:hover {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+th.sortable .sort-arrow {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    opacity: 0.3;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+th.sortable:hover .sort-arrow {
+    opacity: 0.6;
+}
+
+th.sortable.sorted-asc .sort-arrow,
+th.sortable.sorted-desc .sort-arrow {
+    opacity: 1;
+}
+
+th.sortable.sorted-asc .sort-arrow::after {
+    content: '▲';
+    font-size: 10px;
+    color: var(--accent);
+}
+
+th.sortable.sorted-desc .sort-arrow::after {
+    content: '▼';
+    font-size: 10px;
+    color: var(--accent);
 }
 
 td {
@@ -375,6 +429,31 @@ tbody tr:hover {
 
 tbody tr:last-child td {
     border-bottom: none;
+}
+
+tbody tr.highlight-top3 {
+    background: linear-gradient(90deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 215, 0, 0.05) 100%);
+    border-left: 3px solid #ffd700;
+}
+
+tbody tr.highlight-high-winrate {
+    background: linear-gradient(90deg, rgba(48, 209, 88, 0.1) 0%, rgba(48, 209, 88, 0.05) 100%);
+    border-left: 3px solid #30d158;
+}
+
+tbody tr.highlight-top3.highlight-high-winrate {
+    background: linear-gradient(90deg, rgba(255, 215, 0, 0.15) 0%, rgba(48, 209, 88, 0.1) 100%);
+    border-left: 3px solid #ffd700;
+}
+
+tbody tr.pinned {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    font-weight: 500;
+}
+
+tbody tr.pinned td {
+    background: transparent;
 }
 
 .rank-badge {
@@ -461,6 +540,30 @@ tbody tr:last-child td {
 
 .btn-compare:active {
     transform: scale(0.95);
+}
+
+.btn-pin {
+    background: var(--text-secondary);
+    color: white;
+}
+
+.btn-pin:hover {
+    background: var(--text-primary);
+    transform: scale(1.05);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-pin:active {
+    transform: scale(0.95);
+}
+
+.btn-pin.pinned {
+    background: var(--accent);
+    color: white;
+}
+
+.btn-pin.pinned:hover {
+    background: var(--accent-hover);
 }
 
 .win-rate-bar {
@@ -649,6 +752,67 @@ tbody tr:last-child td {
     font-size: 32px;
     font-weight: 600;
     letter-spacing: -0.5px;
+}
+
+.model-info {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+}
+
+.model-info h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+}
+
+.model-detail {
+    margin-bottom: 20px;
+    padding: 16px;
+    background: var(--bg-tertiary);
+    border-radius: 12px;
+}
+
+.model-detail-label {
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.model-detail-value {
+    color: var(--text-primary);
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.prompt-section {
+    margin-top: 20px;
+}
+
+.prompt-section h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+}
+
+.prompt-content {
+    background: var(--bg-tertiary);
+    padding: 16px;
+    border-radius: 12px;
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid var(--border);
 }
 
 .detail-stat {
