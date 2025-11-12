@@ -568,7 +568,7 @@ function createRatingChart() {
     const theme = document.documentElement.getAttribute('data-theme') || 'instagram';
     const chartColors = getChartColors(theme);
     chartColors.primary = chartColors.secondary;
-    chartColors.primaryLight = theme === 'netflix' ? '#5ae87a' : theme === 'kaggle' ? '#00e676' : '#34d399';
+    chartColors.primaryLight = '#00e676';
     
     charts.rating = new Chart(ctx, {
         type: 'bar',
@@ -634,7 +634,7 @@ function createGameStatsChart() {
     
     if (charts.gameStats) charts.gameStats.destroy();
     
-    const theme = document.documentElement.getAttribute('data-theme') || 'apple';
+    const theme = document.documentElement.getAttribute('data-theme') || 'instagram';
     const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text-primary').trim();
     
     const colors = ['#00c853', '#ff9800', '#e1306c'];
