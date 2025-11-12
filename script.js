@@ -53,7 +53,7 @@ async function loadData() {
 
 // Initialize theme from localStorage
 function initializeTheme() {
-    const savedTheme = localStorage.getItem('theme') || 'instagram';
+    const savedTheme = localStorage.getItem('theme') || 'kaggle';
     const savedDark = localStorage.getItem('darkMode') === 'true';
     document.documentElement.setAttribute('data-theme', savedTheme);
     document.documentElement.setAttribute('data-dark', savedDark);
@@ -441,11 +441,12 @@ function updateStatistics() {
 
 // Get chart colors based on theme
 function getChartColors(theme) {
-    // Instagram theme colors
+    const isDark = document.documentElement.getAttribute('data-dark') === 'true';
+    // Kaggle theme colors
     return {
-        primary: '#e1306c',
-        primaryLight: '#c13584',
-        secondary: '#00c853',
+        primary: isDark ? '#58a6ff' : '#20beff',
+        primaryLight: isDark ? '#79c0ff' : '#0099cc',
+        secondary: isDark ? '#3fb950' : '#00c853',
         accent: '#ff9800'
     };
 }
@@ -489,7 +490,7 @@ function createWinRateChart() {
     
     if (charts.winRate) charts.winRate.destroy();
     
-    const theme = document.documentElement.getAttribute('data-theme') || 'instagram';
+    const theme = document.documentElement.getAttribute('data-theme') || 'kaggle';
     const chartColors = getChartColors(theme);
     
     charts.winRate = new Chart(ctx, {
@@ -565,10 +566,11 @@ function createRatingChart() {
     
     if (charts.rating) charts.rating.destroy();
     
-    const theme = document.documentElement.getAttribute('data-theme') || 'instagram';
+    const theme = document.documentElement.getAttribute('data-theme') || 'kaggle';
     const chartColors = getChartColors(theme);
     chartColors.primary = chartColors.secondary;
-    chartColors.primaryLight = '#00e676';
+    const isDark = document.documentElement.getAttribute('data-dark') === 'true';
+    chartColors.primaryLight = isDark ? '#56d364' : '#00e676';
     
     charts.rating = new Chart(ctx, {
         type: 'bar',
@@ -637,7 +639,8 @@ function createGameStatsChart() {
     const theme = document.documentElement.getAttribute('data-theme') || 'instagram';
     const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text-primary').trim();
     
-    const colors = ['#00c853', '#ff9800', '#e1306c'];
+    const isDark = document.documentElement.getAttribute('data-dark') === 'true';
+    const colors = isDark ? ['#3fb950', '#d29922', '#f85149'] : ['#00c853', '#ff9800', '#f44336'];
     
     charts.gameStats = new Chart(ctx, {
         type: 'doughnut',
@@ -682,7 +685,7 @@ function createRatingWinRateChart() {
     
     if (charts.ratingWinRate) charts.ratingWinRate.destroy();
     
-    const theme = document.documentElement.getAttribute('data-theme') || 'instagram';
+    const theme = document.documentElement.getAttribute('data-theme') || 'kaggle';
     const chartColors = getChartColors(theme);
     
     charts.ratingWinRate = new Chart(ctx, {
