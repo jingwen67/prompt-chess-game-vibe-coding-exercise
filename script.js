@@ -636,7 +636,7 @@ function createGameStatsChart() {
     
     if (charts.gameStats) charts.gameStats.destroy();
     
-    const theme = document.documentElement.getAttribute('data-theme') || 'instagram';
+    const theme = document.documentElement.getAttribute('data-theme') || 'kaggle';
     const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text-primary').trim();
     
     const isDark = document.documentElement.getAttribute('data-dark') === 'true';
